@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import CreateTaskModal from './components/CreateTaskModal/CreateTaskModal';
+import Task from './components/Task/Task';
 
 class App extends Component {
   constructor(props) {
@@ -32,8 +33,8 @@ class App extends Component {
           addTask={this.addTask.bind(this)}/>
           
         <ul className="tasks">
-        {this.state.tasks.map(function(task, index) {
-          return <li key={index} className="task">{task}</li>
+        {this.state.tasks.map((task, index) => {
+          return <Task task={task} index={index} deleteTask={this.deleteTask.bind(this)} />
         })}
         </ul>
       </div>
@@ -53,6 +54,15 @@ class App extends Component {
 
     var newTasks = tasks.slice(0);
     newTasks.push(task);
+
+    this.setState({ tasks: newTasks });
+  }
+
+  deleteTask(taskIndex) {
+    var tasks = this.state.tasks;
+
+    var newTasks = tasks.slice(0);
+    newTasks.splice(taskIndex, 1);
 
     this.setState({ tasks: newTasks });
   }
