@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.App {
+
+}
+
+.App-header {
+  background-color: #222;
+  padding: 8px 20px;
+  color: white;
+}
+
+.App-header h1 {
+  display: inline-block;
+
+}
+
+.App-header-createTaskButton {
+  display: inline-block;
+  background-color: lightgreen;
+  border: none;
+  padding: 8px;
+  float: right;
+  cursor: pointer;
+}
+
+.tasks {
+  display: block;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.task {
+  background-color: #f1f1f1;
+  margin: 5px 0;
+  padding: 10px;
+  list-style-type: none;
+}
