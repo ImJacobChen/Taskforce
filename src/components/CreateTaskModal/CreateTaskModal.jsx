@@ -64,6 +64,10 @@ class CreateTaskModal extends React.Component {
 						Name:
 						<input type="text" value={this.state.taskText} onChange={this.handleChange} />
 					</label>
+					<label>
+						Date:
+						<input type="date" /> 
+					</label>
 					<input type="submit" value="Submit" />
 				</form>
 			</div>
