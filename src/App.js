@@ -14,6 +14,32 @@ class App extends Component {
     }
   }
 
+  openCreateTaskModal() {
+    this.setState({ isCreateTaskModalOpen: true });
+  }
+
+  closeCreateTaskModal() {
+    this.setState({ isCreateTaskModalOpen: false });
+  }
+
+  addTask(task) {
+    var tasks = this.state.tasks;
+
+    var newTasks = tasks.slice(0);
+    newTasks.push(task);
+
+    this.setState({ tasks: newTasks });
+  }
+
+  deleteTask(taskIndex) {
+    var tasks = this.state.tasks;
+
+    var newTasks = tasks.slice(0);
+    newTasks.splice(taskIndex, 1);
+
+    this.setState({ tasks: newTasks });
+  }
+
   render() {
     return (
       <div className="App">
@@ -39,32 +65,6 @@ class App extends Component {
         </ul>
       </div>
     );
-  }
-
-  openCreateTaskModal() {
-    this.setState({ isCreateTaskModalOpen: true });
-  }
-
-  closeCreateTaskModal() {
-    this.setState({ isCreateTaskModalOpen: false });
-  }
-
-  addTask(task) {
-    var tasks = this.state.tasks;
-
-    var newTasks = tasks.slice(0);
-    newTasks.push(task);
-
-    this.setState({ tasks: newTasks });
-  }
-
-  deleteTask(taskIndex) {
-    var tasks = this.state.tasks;
-
-    var newTasks = tasks.slice(0);
-    newTasks.splice(taskIndex, 1);
-
-    this.setState({ tasks: newTasks });
   }
 }
 
