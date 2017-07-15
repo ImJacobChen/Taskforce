@@ -32,6 +32,15 @@
   cursor: pointer;
 }
 
+.App-header-signOutButton {
+  display: inline-block;
+  background-color: red;
+  border: none;
+  padding: 8px;
+  float: right;
+  cursor: pointer;
+}
+
 .tasks {
   display: block;
   margin: 0 auto;
