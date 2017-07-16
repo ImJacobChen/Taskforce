@@ -15,13 +15,7 @@ class App extends Component {
       user: null,
       tasks: [],
       isCreateTaskModalOpen: false,
-      signUpEmail: '',
-      signUpPassword: '', 
     }
-
-    this._onSignUpEmailChange = this._onSignUpEmailChange.bind(this);
-    this._onSignUpPasswordChange = this._onSignUpPasswordChange.bind(this);
-    this._onSignUpFormSubmit = this._onSignUpFormSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -60,22 +54,6 @@ class App extends Component {
     this.setState({ tasks: newTasks });
   }
 
-  _onSignUpEmailChange(event) {
-    this.setState({signUpEmail: event.target.value});
-  }
-
-  _onSignUpPasswordChange(event) {
-    this.setState({signUpPassword: event.target.value});
-  }
-
-  _onSignUpFormSubmit(event) {
-    console.log(this.state.signUpEmail, this.state.signUpPassword);
-    fire.auth().createUserWithEmailAndPassword(this.state.signUpEmail, this.state.signUpPassword).catch(function(error) {
-      console.log(error);
-    });
-    event.preventDefault();
-  }
-
   signOut() {
     fire.auth().signOut().then(function() {
       console.log('Signed out');
@@ -85,9 +63,10 @@ class App extends Component {
   }
 
   render() {
-
     if (!this.state.user) {
-      
+      return (
+        <SignUpLogIn />
+      );
     } else {
       return (
         <div className="App">

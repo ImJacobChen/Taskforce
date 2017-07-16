@@ -1,6 +1,56 @@
-import 'react' from React;
+import React from 'react';
+import fire from '../../fire';
 
 class SignUpLogIn extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            signUpEmail: '',
+            signUpPassword: '',
+            logInEmail: '',
+            logInPassword: ''
+        };
+        
+        this._onSignUpEmailChange = this._onSignUpEmailChange.bind(this);
+        this._onSignUpPasswordChange = this._onSignUpPasswordChange.bind(this);
+        this._onSignUpFormSubmit = this._onSignUpFormSubmit.bind(this);
+
+        this._onLogInEmailChange = this._onLogInEmailChange.bind(this);
+        this._onLogInPasswordChange = this._onLogInPasswordChange.bind(this);
+        this._onLogInFormSubmit = this._onLogInFormSubmit.bind(this);
+    }
+
+    _onSignUpEmailChange(event) {
+        this.setState({signUpEmail: event.target.value});
+    }
+
+    _onSignUpPasswordChange(event) {
+        this.setState({signUpPassword: event.target.value});
+    }
+
+    _onSignUpFormSubmit(event) {
+        fire.auth().createUserWithEmailAndPassword(this.state.signUpEmail, this.state.signUpPassword).catch(function(error) {
+          console.log(error);
+        });
+        event.preventDefault();
+    }
+
+    _onLogInEmailChange(event) {
+        this.setState({logInEmail: event.target.value});
+    }
+
+    _onLogInPasswordChange(event) {
+        this.setState({logInPassword: event.target.value});
+    }
+
+    _onLogInFormSubmit(event) {
+        fire.auth().signInWithEmailAndPassword(this.state.logInEmail, this.state.logInPassword).catch(function(error) {
+          console.log(error);
+        });
+        event.preventDefault();
+    }
+
     render() {
         return (
             <div>
@@ -13,11 +63,11 @@ class SignUpLogIn extends React.Component {
                 <button>Sign up</button>
                 </form>
 
-                <h2>Sign in</h2>
-                <form>
-                <input type="text" placeholder="Your username" />
-                <input type="password" placeholder="Password" />
-                <button>Sign up</button>
+                <h2>Log In</h2>
+                <form onSubmit={this._onLogInFormSubmit}>
+                <input type="text" placeholder="Your username" value={this.state.logInEmail} onChange={this._onlogInEmailChange} />
+                <input type="password" placeholder="Password" value={this.state.logInPassword} onChange={this._onlogInPasswordChange} />
+                <button>LLog In</button>
                 </form>
             </div>
         );
