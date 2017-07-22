@@ -65,9 +65,9 @@ class SignUpLogIn extends React.Component {
 
                 <h2>Log In</h2>
                 <form onSubmit={this._onLogInFormSubmit}>
-                <input type="text" placeholder="Your username" value={this.state.logInEmail} onChange={this._onlogInEmailChange} />
-                <input type="password" placeholder="Password" value={this.state.logInPassword} onChange={this._onlogInPasswordChange} />
-                <button>LLog In</button>
+                <input type="email" placeholder="Your email" value={this.state.logInEmail} onChange={this._onLogInEmailChange} />
+                <input type="password" placeholder="Password" value={this.state.logInPassword} onChange={this._onLogInPasswordChange} />
+                <button>Log In</button>
                 </form>
             </div>
         );
