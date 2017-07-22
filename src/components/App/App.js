@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import fire from './fire';
+import fire from '../../fire';
 
-import SignUpLogIn from './components/SignUpLogIn/SignUpLogIn';
-import CreateTaskModal from './components/CreateTaskModal/CreateTaskModal';
-import Task from './components/Task/Task';
+import SignUpLogIn from '../SignUpLogIn/SignUpLogIn';
+import CreateTaskModal from '../CreateTaskModal/CreateTaskModal';
+import Task from '../Task/Task';
 
 class App extends Component {
   constructor(props) {
