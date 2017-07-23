@@ -9,7 +9,7 @@ class Task extends React.Component {
 
     delete() {
         if (this.props.deleteTask) {
-            this.props.deleteTask(this.props.index);
+            this.props.deleteTask(this.props.taskKey);
         }
     }
 

@@ -53,3 +53,21 @@
   padding: 10px;
   list-style-type: none;
 }
+
+.task-seperator {
+  margin: 5px 0;
+  padding: 5px 10px;
+  list-style-type: none;
+  color: #666666;
+}
+.task-seperator p {
+  width: 15%;
+  display: inline-block;
+}
+.task-seperator div {
+  outline: 1px solid #d3d3d3;
+  height: 0px;
+  width: 85%;
+  display: inline-block;
+  vertical-align: middle;
+}

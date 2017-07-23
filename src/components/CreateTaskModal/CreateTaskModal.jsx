@@ -30,7 +30,7 @@ class CreateTaskModal extends React.Component {
 	}
 
 	handleTaskDueDateChange(event) {
-		console.log(event.target.value);
+		var date = new Date(event.target.value);
 		this.setState({taskDueDate: event.target.value});
 	}
 
