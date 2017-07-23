@@ -1,33 +1,70 @@
 import React from 'react';
+import fire from '../../fire';
+
+var database = fire.database();
 
 class CreateTaskModal extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			taskText: ''
+			taskText: '',
+			taskDueDate: '',
+			taskPriority: '1',
+			taskDescription: ''
 		};
 
-		this.handleChange = this.handleChange.bind(this);
+		this.handleTaskTextChange = this.handleTaskTextChange.bind(this);
+		this.handleTaskDueDateChange = this.handleTaskDueDateChange.bind(this);
+		this.handleTaskPriorityChange = this.handleTaskPriorityChange.bind(this);
+		this.handleTaskDescriptionChange = this.handleTaskDescriptionChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+
 		this.close = this.close.bind(this);
+
+		this.addTask = this.addTask.bind(this);
 	}
 
-	handleChange(event) {
+	handleTaskTextChange(event) {
 		this.setState({taskText: event.target.value});
 	}
 
-	handleSubmit(event) {
-		this.props.addTask(this.state.taskText);
-		event.preventDefault();
+	handleTaskDueDateChange(event) {
+		console.log(event.target.value);
+		this.setState({taskDueDate: event.target.value});
 	}
 
-	close(e) {
-		e.preventDefault();
+	handleTaskPriorityChange(event) {
+		this.setState({taskPriority: event.target.value});
+	}
 
+	handleTaskDescriptionChange(event) {
+		this.setState({taskDescription: event.target.value});
+	}
+
+	handleSubmit(event) {
+		event.preventDefault();
+
+		let task = {
+			taskText: this.state.taskText,
+			taskDueDate: this.state.taskDueDate,
+			taskPriority: this.state.taskPriority,
+			taskDescription: this.state.taskDescription
+		}
+
+		this.addTask(task);
+		this.close();
+	}
+
+	close() {
 		if (this.props.onClose) {
 			this.props.onClose();
 		}
+	}
+
+	addTask(task) {
+		var currentUser = fire.auth().currentUser.uid;
+		database.ref(currentUser + '/tasks').push(task);
 	}
 
 	render() {
@@ -62,12 +99,30 @@ class CreateTaskModal extends React.Component {
 				<form onSubmit={this.handleSubmit}>
 					<label>
 						Name:
-						<input type="text" value={this.state.taskText} onChange={this.handleChange} />
+						<input type="text" value={this.state.taskText} onChange={this.handleTaskTextChange} />
 					</label>
+					<br /><br />
 					<label>
 						Date:
-						<input type="date" /> 
+						<input type="date" onChange={this.handleTaskDueDateChange} /> 
 					</label>
+					<br /><br />
+					<label>
+						Priority:
+						<select selected={this.state.taskPriority} onChange={this.handleTaskPriorityChange}>
+							<option value='1'>Normal (1)</option>
+							<option value='2'>(2)</option>
+							<option value='3'>(3)</option>
+							<option value='4'>(4)</option>
+							<option value='5'>High (5)</option>
+						</select>
+					</label>
+					<br /><br />
+					<label>
+						Description:
+						<textarea value={this.state.taskDescription} onChange={this.handleTaskDescriptionChange}></textarea>
+					</label>
+					<br /><br />
 					<input type="submit" value="Submit" />
 				</form>
 			</div>
