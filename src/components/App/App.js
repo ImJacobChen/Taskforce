@@ -7,6 +7,8 @@ import SignUpLogIn from '../SignUpLogIn/SignUpLogIn';
 import CreateTaskModal from '../CreateTaskModal/CreateTaskModal';
 import Task from '../Task/Task';
 
+const database = fire.database();
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -22,10 +24,25 @@ class App extends Component {
     fire.auth().onAuthStateChanged(function(user) {
       if (user) {
         this.setState({ user: user });
+        var tasksRef = database.ref(user.uid + '/tasks');
+        tasksRef.on('child_added', function(data) {
+          console.log('Child added', data.val());
+        });
+
+        tasksRef.on('child_changed', function(data) {
+          console.log('Child changed', data.val());
+        });
+
+        tasksRef.on('child_removed', function(data) {
+          console.log('Child removed', data.val());
+        });
       } else {
         this.setState({ user: null });
       }
     }.bind(this));
+
+    
+    
   }
 
   openCreateTaskModal() {
@@ -34,15 +51,6 @@ class App extends Component {
 
   closeCreateTaskModal() {
     this.setState({ isCreateTaskModalOpen: false });
-  }
-
-  addTask(task) {
-    var tasks = this.state.tasks;
-
-    var newTasks = tasks.slice(0);
-    newTasks.push(task);
-
-    this.setState({ tasks: newTasks });
   }
 
   deleteTask(taskIndex) {
@@ -88,8 +96,7 @@ class App extends Component {
 
           <CreateTaskModal 
             isOpen={this.state.isCreateTaskModalOpen} 
-            onClose={this.closeCreateTaskModal.bind(this)}
-            addTask={this.addTask.bind(this)}/>
+            onClose={this.closeCreateTaskModal.bind(this)} />
             
           <ul className="tasks">
           {this.state.tasks.map((task, index) => {
