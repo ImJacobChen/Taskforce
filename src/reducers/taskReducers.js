@@ -1,6 +1,6 @@
 'use strict'
 
-export default taskReducers(state={tasks:[
+export function taskReducers(state={tasks:[
     {
         id: 1,
         title: 'Task title',
