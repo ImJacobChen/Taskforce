@@ -6,15 +6,6 @@ import Task from '../Task/Task';
 
 const database = fire.database();
 
-const TasksSeperator = function(props) {
-    return (
-        <li className='task-seperator'>
-            <p>{props.text}</p>
-            <div></div> 
-        </li>
-    );
-}
-
 class TaskList extends React.Component {
     constructor(props) {
         super(props);
