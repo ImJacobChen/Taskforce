@@ -35,8 +35,8 @@ class CreateTaskModal extends React.Component {
 		event.preventDefault();
 
 		let task = {
-			taskText: this.state.taskText,
-			taskDescription: this.state.taskDescription
+			title: this.state.taskTitle,
+			description: this.state.taskDescription
 		}
 
 		this.props.addTask(task);
@@ -99,8 +99,14 @@ class CreateTaskModal extends React.Component {
 	}
 }
 
+function mapStateToProps(state) {
+    return {
+        tasks: state.tasks.tasks
+    }
+}
+
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({addTask: addTask}, dispatch);
 }
 
-export default connect(mapDispatchToProps)(CreateTaskModal);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTaskModal);
