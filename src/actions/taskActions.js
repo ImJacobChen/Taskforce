@@ -1,4 +1,11 @@
-import { GET_TASKS, ADD_TASK, DELETE_TASK } from './constants';
+import fire from '../fire';
+import user from '../fire';
+import { GET_TASKS, ADD_TASK, RECEIVE_TASK, DELETE_TASK } from './constants';
+
+if (user) {
+    const tasks = fire.database.ref(user.id + '/tasks');
+}
+
 
 export function getTasks() {
     return {
@@ -7,9 +14,8 @@ export function getTasks() {
 }
 
 export function addTask(task) {
-    return {
-        type: ADD_TASK,
-        payload: task
+    return function() {
+        tasks.push(task);
     }
 }
 
