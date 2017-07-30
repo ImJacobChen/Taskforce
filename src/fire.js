@@ -9,4 +9,9 @@ var config = {
 };
 
 var fire = firebase.initializeApp(config);
+
+export var user = fire.auth().onAuthStateChanged(function(user) {
+  if (user) return user;
+});
+
 export default fire;
