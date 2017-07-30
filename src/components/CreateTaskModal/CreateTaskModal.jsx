@@ -16,13 +16,11 @@ class CreateTaskModal extends React.Component {
 			taskDescription: ''
 		};
 
-		this.handleTitleTextChange = this.handleTitleTextChange.bind(this);
+		this.handleTaskTitleChange = this.handleTaskTitleChange.bind(this);
 		this.handleTaskDescriptionChange = this.handleTaskDescriptionChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 
 		this.close = this.close.bind(this);
-
-		this.addTask = this.addTask.bind(this);
 	}
 
 	handleTaskTitleChange(event) {
