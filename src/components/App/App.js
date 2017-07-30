@@ -3,7 +3,9 @@ import './App.css';
 
 import {Provider} from 'react-redux';
 
-import {applyMiddleware, createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 
 import reducers from '../../reducers/index';
 
@@ -15,7 +17,8 @@ import SignUpLogIn from '../SignUpLogIn/SignUpLogIn';
 import CreateTaskModal from '../CreateTaskModal/CreateTaskModal';
 import TaskList from '../TaskList/TaskList';
 
-const store = createStore(reducers);
+const middleware = applyMiddleware(thunk, logger);
+const store = createStore(reducers, middleware);
 
 class App extends Component {
   constructor(props) {
