@@ -1,6 +1,12 @@
 'use strict'
 
-export default taskReducers(state={tasks:[]}, action) {
+export default taskReducers(state={tasks:[
+    {
+        id: 1,
+        title: 'Task title',
+        description: 'Task description'
+    }
+]}, action) {
     switch(action.type) {
         case 'GET_TASKS':
             return {...state, tasks:[...state.tasks]};
