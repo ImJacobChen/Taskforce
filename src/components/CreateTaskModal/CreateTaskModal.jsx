@@ -1,4 +1,8 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {addTask} from '../../actions/taskActions';
+
 import fire from '../../fire';
 
 var database = fire.database();
@@ -8,15 +12,11 @@ class CreateTaskModal extends React.Component {
 		super(props);
 
 		this.state = {
-			taskText: '',
-			taskDueDate: '',
-			taskPriority: '1',
+			taskTitle: '',
 			taskDescription: ''
 		};
 
-		this.handleTaskTextChange = this.handleTaskTextChange.bind(this);
-		this.handleTaskDueDateChange = this.handleTaskDueDateChange.bind(this);
-		this.handleTaskPriorityChange = this.handleTaskPriorityChange.bind(this);
+		this.handleTitleTextChange = this.handleTitleTextChange.bind(this);
 		this.handleTaskDescriptionChange = this.handleTaskDescriptionChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 
@@ -25,17 +25,8 @@ class CreateTaskModal extends React.Component {
 		this.addTask = this.addTask.bind(this);
 	}
 
-	handleTaskTextChange(event) {
-		this.setState({taskText: event.target.value});
-	}
-
-	handleTaskDueDateChange(event) {
-		var date = new Date(event.target.value);
-		this.setState({taskDueDate: event.target.value});
-	}
-
-	handleTaskPriorityChange(event) {
-		this.setState({taskPriority: event.target.value});
+	handleTaskTitleChange(event) {
+		this.setState({taskTitle: event.target.value});
 	}
 
 	handleTaskDescriptionChange(event) {
@@ -47,12 +38,10 @@ class CreateTaskModal extends React.Component {
 
 		let task = {
 			taskText: this.state.taskText,
-			taskDueDate: this.state.taskDueDate,
-			taskPriority: this.state.taskPriority,
 			taskDescription: this.state.taskDescription
 		}
 
-		this.addTask(task);
+		this.props.addTask(task);
 		this.close();
 	}
 
@@ -60,11 +49,6 @@ class CreateTaskModal extends React.Component {
 		if (this.props.onClose) {
 			this.props.onClose();
 		}
-	}
-
-	addTask(task) {
-		var currentUser = fire.auth().currentUser.uid;
-		database.ref(currentUser + '/tasks').push(task);
 	}
 
 	render() {
@@ -98,24 +82,8 @@ class CreateTaskModal extends React.Component {
 				<button onClick={this.close}>Close</button>
 				<form onSubmit={this.handleSubmit}>
 					<label>
-						Name:
-						<input type="text" value={this.state.taskText} onChange={this.handleTaskTextChange} />
-					</label>
-					<br /><br />
-					<label>
-						Date:
-						<input type="date" onChange={this.handleTaskDueDateChange} /> 
-					</label>
-					<br /><br />
-					<label>
-						Priority:
-						<select selected={this.state.taskPriority} onChange={this.handleTaskPriorityChange}>
-							<option value='1'>Normal (1)</option>
-							<option value='2'>(2)</option>
-							<option value='3'>(3)</option>
-							<option value='4'>(4)</option>
-							<option value='5'>High (5)</option>
-						</select>
+						Title:
+						<input type="text" value={this.state.taskTitle} onChange={this.handleTaskTitleChange} />
 					</label>
 					<br /><br />
 					<label>
@@ -133,4 +101,8 @@ class CreateTaskModal extends React.Component {
 	}
 }
 
-export default CreateTaskModal;
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators({addTask: addTask}, dispatch);
+}
+
+export default connect(mapDispatchToProps)(CreateTaskModal);
