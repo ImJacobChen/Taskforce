@@ -75,7 +75,7 @@ class TaskList extends React.Component {
         });
 
         // Begin with today element in task list
-        structuredTasks.push(<TasksSeperator text='today' />);
+        structuredTasks.push(<TasksSeperator key='today' text='today' />);
 
         var previousTaskDate = moment();
 
@@ -90,7 +90,7 @@ class TaskList extends React.Component {
                 structuredTasks.push(<Task key={task.key} task={task.taskText} taskKey={task.key} deleteTask={this.deleteTask.bind(this)} />);
             } else {
                 if (!taskDate.isBefore(today)) {
-                    structuredTasks.push(<TasksSeperator text={today.to(taskDate)} />);
+                    //structuredTasks.push(<TasksSeperator text={today.to(taskDate)} />);
                     structuredTasks.push(<Task key={task.key} task={task.taskText} taskKey={task.key} deleteTask={this.deleteTask.bind(this)} />);
                 }
             }
