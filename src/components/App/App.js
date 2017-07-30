@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import {Provider} from 'react-redux';
+
+import {applyMiddleware, createStore} from 'redux';
+
+import reducers from '../../reducers/index';
+
+import {getTasks, addTask, deleteTask} from '../../actions/taskActions';
+
 import fire from '../../fire';
 
 import SignUpLogIn from '../SignUpLogIn/SignUpLogIn';
 import CreateTaskModal from '../CreateTaskModal/CreateTaskModal';
 import TaskList from '../TaskList/TaskList';
+
+const store = createStore(reducers);
 
 class App extends Component {
   constructor(props) {
@@ -50,29 +60,31 @@ class App extends Component {
       );
     } else {
       return (
-        <div className="App">
-          <div className="App-header">
-            <h1>Taskforce</h1>
+        <Provider store={store}>
+          <div className="App">
+            <div className="App-header">
+              <h1>Taskforce</h1>
 
-            <button 
-              className="App-header-createTaskButton"
-              onClick={this.openCreateTaskModal.bind(this)}>
-              Create task
-            </button>
+              <button 
+                className="App-header-createTaskButton"
+                onClick={this.openCreateTaskModal.bind(this)}>
+                Create task
+              </button>
 
-            <button 
-              className="App-header-signOutButton"
-              onClick={this.signOut}>
-              Sign out
-            </button>
+              <button 
+                className="App-header-signOutButton"
+                onClick={this.signOut}>
+                Sign out
+              </button>
+            </div>
+
+            <CreateTaskModal 
+              isOpen={this.state.isCreateTaskModalOpen} 
+              onClose={this.closeCreateTaskModal.bind(this)} />
+              
+            <TaskList user={this.state.user} />
           </div>
-
-          <CreateTaskModal 
-            isOpen={this.state.isCreateTaskModalOpen} 
-            onClose={this.closeCreateTaskModal.bind(this)} />
-            
-          <TaskList user={this.state.user} />
-        </div>
+        </Provider>
       );
     }
   }
