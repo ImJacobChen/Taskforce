@@ -1,4 +1,8 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {getTasks, addTask, deleteTask} from '../../actions/taskActions';
+
 import fire from '../../fire';
 import moment from 'moment';
 
@@ -11,25 +15,33 @@ class TaskList extends React.Component {
         super(props);
     }
 
-    componentWillMount() {
-
-    }
-
-    deleteTask(taskKey) {
-
-    }
-
-    refreshTasks() {
-
+    componentDidMount() {
+        this.props.getTasks();
     }
 
    render() {
+        const tasks = this.props.tasks.map(function(task) {
+            return (
+                <Task key={task.id} title={task.title} />
+            );
+        });
+
         return (
             <ul className="tasks">
-            
+                {tasks}
             </ul>
         );
    }
 }
 
-export default TaskList;
+function mapStateToProps(state) {
+    return {
+        tasks: state.tasks.tasks
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({getTasks: getTasks}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskList);
