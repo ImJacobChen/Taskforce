@@ -1,4 +1,4 @@
-'use strict'
+import { GET_TASKS, ADD_TASK, DELETE_TASK } from '../actions/constants';
 
 export function taskReducers(state={tasks:[
     {
@@ -8,16 +8,14 @@ export function taskReducers(state={tasks:[
     }
 ]}, action) {
     switch(action.type) {
-        case 'GET_TASKS':
+        case GET_TASKS:
             return {...state, tasks:[...state.tasks]};
-            break;
 
-        case 'ADD_TASK': 
+        case ADD_TASK: 
             let tasks = state.tasks.concat(action.payload);
             return state = {tasks};
-            break;
 
-        case 'DELETE_TASK':
+        case DELETE_TASK:
             const tasksToDelete = state.tasks.slice(0);
 
             const indexToDelete = tasksToDelete.findIndex(
@@ -28,8 +26,8 @@ export function taskReducers(state={tasks:[
 
             let newTasks = tasksToDelete.splice(indexToDelete, 1);
             return state = {tasks: newTasks};
-            break;
+        
+        default:
+            return state;
     }
-
-    return state;
 }

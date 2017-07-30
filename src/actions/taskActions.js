@@ -1,21 +1,21 @@
-'use strict'
+import { GET_TASKS, ADD_TASK, DELETE_TASK } from './constants';
 
 export function getTasks() {
     return {
-        type: 'GET_TASKS'
+        type: GET_TASKS
     }
 }
 
-export function createTask(task) {
+export function addTask(task) {
     return {
-        type: 'CREATE_TASK',
+        type: ADD_TASK,
         payload: task
     }
 }
 
 export function deleteTask(task) {
     return {
-        type: 'DELETE_TASK',
+        type: DELETE_TASK,
         payload: task
     }
 }
