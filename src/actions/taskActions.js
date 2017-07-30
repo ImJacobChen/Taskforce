@@ -13,11 +13,26 @@ export function getTasks() {
 export function addTask(task) {
     let userId = fire.auth().currentUser.uid;
     let tasks = fire.database().ref(userId + '/tasks');
-    
+
     if (tasks !== null || userId !== null) {
         return function() {
             tasks.push(task);
         }
+    }
+}
+
+export function receiveTask(task) {
+    return {
+        type: RECEIVE_TASK,
+        payload: task
+    }
+}
+
+export function subscribeToTasks() {
+    return function(dispatch) {
+        let userId = fire.auth().currentUser.uid;
+        let tasks = fire.database().ref(userId + '/tasks');
+        tasks.on('child_added', data => dispatch(receiveTask(data.val())));
     }
 }
 

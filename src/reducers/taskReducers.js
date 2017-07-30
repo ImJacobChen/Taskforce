@@ -1,4 +1,4 @@
-import { GET_TASKS, ADD_TASK, DELETE_TASK } from '../actions/constants';
+import { GET_TASKS, ADD_TASK, RECEIVE_TASK, DELETE_TASK } from '../actions/constants';
 
 export function taskReducers(state={tasks:[
     {
@@ -14,6 +14,11 @@ export function taskReducers(state={tasks:[
         case ADD_TASK: 
             let tasks = state.tasks.concat(action.payload);
             return state = {tasks};
+
+        case RECEIVE_TASK:
+            return Object.assign({}, state, {
+                tasks: state.tasks.concat([action.payload])
+            });
 
         case DELETE_TASK:
             const tasksToDelete = state.tasks.slice(0);
