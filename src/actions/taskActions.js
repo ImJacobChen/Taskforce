@@ -1,10 +1,12 @@
 import fire from '../fire';
-import user from '../fire';
 import { GET_TASKS, ADD_TASK, RECEIVE_TASK, DELETE_TASK } from './constants';
 
+var tasks = null;
+
 if (user) {
-    const tasks = fire.database.ref(user.id + '/tasks');
-}
+    console.log(user.uid);
+    tasks = fire.database().ref(user.uid + '/tasks');
+} 
 
 
 export function getTasks() {
@@ -14,8 +16,10 @@ export function getTasks() {
 }
 
 export function addTask(task) {
-    return function() {
-        tasks.push(task);
+    if (tasks) {
+        return function() {
+            tasks.push(task);
+        }
     }
 }
 
