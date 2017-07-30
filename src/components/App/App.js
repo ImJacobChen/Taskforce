@@ -54,11 +54,11 @@ class App extends Component {
   }
 
   render() {
-    if (!this.state.user) {
-      return (
-        <SignUpLogIn />
-      );
-    } else {
+    // if (!this.state.user) {
+    //   return (
+    //     <SignUpLogIn />
+    //   );
+    // } else {
       return (
         <Provider store={store}>
           <div className="App">
@@ -86,7 +86,7 @@ class App extends Component {
           </div>
         </Provider>
       );
-    }
+    // }
   }
 }
 
