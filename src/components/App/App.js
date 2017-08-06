@@ -9,8 +9,6 @@ import thunk from 'redux-thunk';
 
 import reducers from '../../reducers/index';
 
-import {getTasks, addTask, deleteTask} from '../../actions/taskActions';
-
 import fire from '../../fire';
 
 import SignUpLogIn from '../SignUpLogIn/SignUpLogIn';

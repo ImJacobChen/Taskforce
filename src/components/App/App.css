@@ -16,6 +16,7 @@
   color: white;
   position: fixed;
   top: 0;
+  z-index: 2;
 }
 
 .App-header h1 {

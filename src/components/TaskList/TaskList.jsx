@@ -1,34 +1,34 @@
 import React from 'react';
+import './TaskList.css';
+
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {getTasks, addTask, subscribeToTasks, deleteTask} from '../../actions/taskActions';
-
-import fire from '../../fire';
-import moment from 'moment';
+import {addTask, subscribeToTasks} from '../../actions/taskActions';
 
 import Task from '../Task/Task';
 
-const database = fire.database();
+const LoadingSpinner = (props) => {
+    return (
+        <div className='loading-overlay'><div className='loading-spinner'></div></div>
+    );
+}
 
 class TaskList extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    componentWillMount() {
+    componentDidMount() {
         this.props.subscribeToTasks();
     }
 
     render() {
         const tasks = this.props.tasks.map(function(task) {
-            console.log(task);
             return (
                 <Task key={task.id} title={task.title} />
             );
         });
 
         return (
-            <ul className="tasks">
+            (this.props.loadingTasks === true) 
+            ? <LoadingSpinner />
+            : <ul className="tasks">
                 {tasks}
             </ul>
         );
@@ -37,7 +37,8 @@ class TaskList extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        tasks: state.tasks.tasks
+        tasks: state.tasks.tasks,
+        loadingTasks: state.tasks.loadingTasks
     }
 }
 

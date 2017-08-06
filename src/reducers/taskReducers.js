@@ -1,15 +1,12 @@
-import { GET_TASKS, ADD_TASK, RECEIVE_TASK, DELETE_TASK } from '../actions/constants';
+import { ADD_TASK, RECEIVE_TASK, DELETE_TASK, LOADING_TASKS, LOADING_TASKS_SUCCESS } from '../constants/task-constants';
 
-export function taskReducers(state={tasks:[
-    {
-        id: 1,
-        title: 'Task title',
-        description: 'Task description'
-    }
-]}, action) {
+const initialState = {
+    tasks: [],
+    loadingTasks: false
+};
+
+export function taskReducers(state = initialState, action) {
     switch(action.type) {
-        case GET_TASKS:
-            return {...state, tasks:[...state.tasks]};
 
         case ADD_TASK: 
             let tasks = state.tasks.concat(action.payload);
@@ -31,6 +28,16 @@ export function taskReducers(state={tasks:[
 
             let newTasks = tasksToDelete.splice(indexToDelete, 1);
             return state = {tasks: newTasks};
+
+        case LOADING_TASKS:
+            return Object.assign({}, state, {
+                loadingTasks: true,
+            });
+
+        case LOADING_TASKS_SUCCESS:
+            return Object.assign({}, state, {
+                loadingTasks: false,
+            });
         
         default:
             return state;

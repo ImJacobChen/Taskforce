@@ -1,14 +1,5 @@
 import fire from '../fire';
-import { GET_TASKS, ADD_TASK, RECEIVE_TASK, DELETE_TASK } from './constants';
-
-var tasks = null;
-
-
-export function getTasks() {
-    return {
-        type: GET_TASKS
-    }
-}
+import { RECEIVE_TASK, DELETE_TASK, LOADING_TASKS, LOADING_TASKS_SUCCESS } from '../constants/task-constants';
 
 export function addTask(task) {
     let userId = fire.auth().currentUser.uid;
@@ -30,9 +21,13 @@ export function receiveTask(task) {
 
 export function subscribeToTasks() {
     return function(dispatch) {
+        dispatch(loadingTasks());
         let userId = fire.auth().currentUser.uid;
         let tasks = fire.database().ref(userId + '/tasks');
-        tasks.on('child_added', data => dispatch(receiveTask(data.val())));
+        tasks.on('child_added', data => {
+            dispatch(loadingTasksSuccess());
+            dispatch(receiveTask(data.val()));
+        });
     }
 }
 
@@ -40,5 +35,17 @@ export function deleteTask(task) {
     return {
         type: DELETE_TASK,
         payload: task
+    }
+}
+
+export function loadingTasks() {
+    return {
+        type: LOADING_TASKS
+    }
+}
+
+export function loadingTasksSuccess() {
+    return {
+        type: LOADING_TASKS_SUCCESS
     }
 }

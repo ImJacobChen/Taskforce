@@ -1,17 +1,11 @@
 import React from 'react';
 
-class Task extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <li className="task">
-                {this.props.title}
-            </li>
-        );
-    }
+const Task = function(props) {
+    return (
+        <li className="task">
+            {props.title}
+        </li>
+    );
 }
 
 export default Task;

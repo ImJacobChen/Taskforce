@@ -3,10 +3,6 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {addTask} from '../../actions/taskActions';
 
-import fire from '../../fire';
-
-var database = fire.database();
-
 class CreateTaskModal extends React.Component {
 	constructor(props) {
 		super(props);
