@@ -21,7 +21,7 @@ class TaskList extends React.Component {
     render() {
         const tasks = this.props.tasks.map(function(task) {
             return (
-                <Task key={task.id} title={task.title} />
+                <Task key={task.key} title={task.title} />
             );
         });
 

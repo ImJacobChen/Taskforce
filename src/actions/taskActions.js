@@ -26,7 +26,9 @@ export function subscribeToTasks() {
         let tasks = fire.database().ref(userId + '/tasks');
         tasks.on('child_added', data => {
             dispatch(loadingTasksSuccess());
-            dispatch(receiveTask(data.val()));
+            let task = data.val();
+            task.key = data.key;
+            dispatch(receiveTask(task));
         });
     }
 }
