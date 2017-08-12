@@ -21,7 +21,17 @@ class TaskList extends React.Component {
     render() {
         const tasks = this.props.tasks.map(function(task) {
             return (
-                <Task key={task.key} title={task.title} />
+                <Task key={task.key} title={task.title} dueDate={task.dueDate} />
+            );
+        });
+
+        const tasksToSortByDueDate = this.props.tasks.slice(0);
+        tasksToSortByDueDate.sort(function(a, b) {
+            return (new Date(a.dueDate) > new Date(b.dueDate));
+        });
+        const tasksOrderedByDueDate = tasksToSortByDueDate.map(function(task) {
+            return (
+                <Task key={task.key} title={task.title} dueDate={task.dueDate} />
             );
         });
 
@@ -29,7 +39,7 @@ class TaskList extends React.Component {
             (this.props.loadingTasks === true) 
             ? <LoadingSpinner />
             : <ul className="tasks">
-                {tasks}
+                {tasksOrderedByDueDate}
             </ul>
         );
    }
