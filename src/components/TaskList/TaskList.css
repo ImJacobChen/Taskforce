@@ -24,3 +24,16 @@
   0%    { transform:rotate(0deg); }
   100%  { transform:rotate(360deg); }
 }
+
+.taskSeperator {
+    display: table;
+    width: 100%;
+}
+.taskSeperator__text {
+    display: table-cell;
+    width: 22%;
+}
+.taskSeperator__line {
+    display: table-cell;
+    border-bottom: 2px solid black;
+}
