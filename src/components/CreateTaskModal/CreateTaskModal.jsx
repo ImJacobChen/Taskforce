@@ -9,11 +9,13 @@ class CreateTaskModal extends React.Component {
 
 		this.state = {
 			taskTitle: '',
-			taskDescription: ''
+			taskDescription: '',
+			taskDueDate: '',
 		};
 
 		this.handleTaskTitleChange = this.handleTaskTitleChange.bind(this);
 		this.handleTaskDescriptionChange = this.handleTaskDescriptionChange.bind(this);
+		this.handleTaskDueDateChange = this.handleTaskDueDateChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 
 		this.close = this.close.bind(this);
@@ -27,21 +29,42 @@ class CreateTaskModal extends React.Component {
 		this.setState({taskDescription: event.target.value});
 	}
 
+	handleTaskDueDateChange(event) {
+		this.setState({taskDueDate: event.target.value});
+		//TODO: If date is less than today. Show error.
+	}
+
 	handleSubmit(event) {
-		event.preventDefault();
+		event.preventDefault()
 
 		let task = {
 			title: this.state.taskTitle,
+			dueDate: this.state.taskDueDate,
 			description: this.state.taskDescription
 		}
 
-		this.props.addTask(task);
-		this.close();
+		if (task.title === '' || task.title === null) {
+			alert('You need to enter a title'); 
+			return;
+		}
+
+		if (task.dueDate === '' || task.dueDate === null) {
+			alert('You need to enter a due date'); 
+			return;
+		}
+
+		this.props.addTask(task)
+		this.close()
 	}
 
 	close() {
 		if (this.props.onClose) {
 			this.props.onClose();
+			this.setState({
+				taskTitle: '',
+				taskDescription: '',
+				taskDueDate: '',
+			});
 		}
 	}
 
@@ -78,6 +101,11 @@ class CreateTaskModal extends React.Component {
 					<label>
 						Title:
 						<input type="text" value={this.state.taskTitle} onChange={this.handleTaskTitleChange} />
+					</label>
+					<br /><br />
+					<label>
+						Due Date:
+						<input type='date' value={this.state.taskDueDate} onChange={this.handleTaskDueDateChange} />
 					</label>
 					<br /><br />
 					<label>
