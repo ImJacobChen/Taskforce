@@ -13,6 +13,15 @@ const LoadingSpinner = (props) => {
     );
 }
 
+const TaskSeperator = (props) => {
+    return (
+        <li className='taskSeperator' key={props.date}>
+            <span className='taskSeperator__text'>{props.date}</span>
+            <span className='taskSeperator__line'></span>
+        </li>
+    );
+}
+
 class TaskList extends React.Component {
     componentDidMount() {
         this.props.subscribeToTasks();
@@ -25,6 +34,7 @@ class TaskList extends React.Component {
             );
         });
 
+        //Tasks ordered by due date
         const tasksToSortByDueDate = this.props.tasks.slice(0);
         tasksToSortByDueDate.sort(function(a, b) {
             return (new Date(a.dueDate) > new Date(b.dueDate));
@@ -35,11 +45,37 @@ class TaskList extends React.Component {
             );
         });
 
+        // Grouped by date tasks object
+        const tasksGroupedAndSeperatedByDate = [];
+        const sortedTasksObject = {};
+        let taskDueDate = null;
+        tasksToSortByDueDate.forEach(function(task) {
+            if (task.dueDate !== taskDueDate) {
+                sortedTasksObject[task.dueDate] = [task];
+            } else if (task.dueDate === taskDueDate) {
+                sortedTasksObject[task.dueDate].push(task);
+            }
+
+            taskDueDate = task.dueDate;
+        });
+        for (var key in sortedTasksObject) {
+            // Create seperator with object key (due date).
+            tasksGroupedAndSeperatedByDate.push(<TaskSeperator date={key} />);
+
+            // Add the tasks falling under this date
+            sortedTasksObject[key].forEach(function(task) {
+                tasksGroupedAndSeperatedByDate
+                    .push(<Task key={task.key} title={task.title} dueDate={task.dueDate} />);
+            });
+
+        }
+
+        // Return
         return (
             (this.props.loadingTasks === true) 
             ? <LoadingSpinner />
             : <ul className="tasks">
-                {tasksOrderedByDueDate}
+                {tasksGroupedAndSeperatedByDate}
             </ul>
         );
    }
