@@ -2,8 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {addTask} from '../../actions/taskActions';
+import './CreateTaskModal.css';
 
-class CreateTaskModal extends React.Component {
+export class CreateTaskModal extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -71,31 +72,9 @@ class CreateTaskModal extends React.Component {
 	render() {
 		if (this.props.isOpen === false) return null
 
-		let modalStyle = {
-			width: '75%',
-			height: '50%',
-			backgroundColor: '#fff',
-			position: 'absolute',
-			top: '50%',
-			left: '50%',
-			transform: 'translate(-50%, -50%)',
-			zIndex: '9999',
-			background: '#fff'
-		}
-
-		let backdropStyle = {
-			position: 'absolute',
-			width: '100%',
-			height: '100%',
-			top: '0px',
-			left: '0px',
-			zIndex: '9998',
-			background: 'rgba(0, 0, 0, 0.3)'
-		}
-
 		return (
 		<div>
-			<div style={modalStyle}>
+			<div className='modal'>
 				<button onClick={this.close}>Close</button>
 				<form onSubmit={this.handleSubmit}>
 					<label>
@@ -117,7 +96,7 @@ class CreateTaskModal extends React.Component {
 				</form>
 			</div>
 			
-			<div style={backdropStyle} onClick={e => this.close(e)}></div>
+			<div className='backdrop' onClick={e => this.close(e)}></div>
 		</div>
 		);
 	}
