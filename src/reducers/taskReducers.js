@@ -1,4 +1,4 @@
-import { ADD_TASK, RECEIVE_TASK, DELETE_TASK, LOADING_TASKS, LOADING_TASKS_SUCCESS } from '../constants/task-constants';
+import { ADD_TASK, RECEIVE_TASK, DELETE_TASK, LOADING_TASKS, LOADING_TASKS_SUCCESS } from '../constants/taskConstants';
 
 const initialState = {
     tasks: [],
