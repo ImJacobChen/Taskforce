@@ -35,9 +35,7 @@ export class CreateTaskModal extends React.Component {
 		//TODO: If date is less than today. Show error.
 	}
 
-	handleSubmit(event) {
-		event.preventDefault()
-
+	handleSubmit() {
 		let task = {
 			title: this.state.taskTitle,
 			dueDate: this.state.taskDueDate,
@@ -74,9 +72,9 @@ export class CreateTaskModal extends React.Component {
 
 		return (
 		<div>
-			<div className='modal'>
-				<button onClick={this.close}>Close</button>
-				<form onSubmit={this.handleSubmit}>
+			<div className="modal">
+				<button className="modal__close-btn" onClick={this.close}>Close</button>
+				<form>
 					<label>
 						Title:
 						<input type="text" value={this.state.taskTitle} onChange={this.handleTaskTitleChange} />
@@ -84,7 +82,7 @@ export class CreateTaskModal extends React.Component {
 					<br /><br />
 					<label>
 						Due Date:
-						<input type='date' value={this.state.taskDueDate} onChange={this.handleTaskDueDateChange} />
+						<input type="date" value={this.state.taskDueDate} onChange={this.handleTaskDueDateChange} />
 					</label>
 					<br /><br />
 					<label>
@@ -92,11 +90,11 @@ export class CreateTaskModal extends React.Component {
 						<textarea value={this.state.taskDescription} onChange={this.handleTaskDescriptionChange}></textarea>
 					</label>
 					<br /><br />
-					<input type="submit" value="Submit" />
+					<button className="modal__submit-btn" onClick={this.handleSubmit}>Submit</button>
 				</form>
 			</div>
 			
-			<div className='backdrop' onClick={e => this.close(e)}></div>
+			<div className="backdrop" onClick={e => this.close(e)}></div>
 		</div>
 		);
 	}
