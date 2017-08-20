@@ -2,8 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {addTask} from '../../actions/taskActions';
+import './CreateTaskModal.css';
 
-class CreateTaskModal extends React.Component {
+export class CreateTaskModal extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -34,9 +35,7 @@ class CreateTaskModal extends React.Component {
 		//TODO: If date is less than today. Show error.
 	}
 
-	handleSubmit(event) {
-		event.preventDefault()
-
+	handleSubmit() {
 		let task = {
 			title: this.state.taskTitle,
 			dueDate: this.state.taskDueDate,
@@ -71,33 +70,11 @@ class CreateTaskModal extends React.Component {
 	render() {
 		if (this.props.isOpen === false) return null
 
-		let modalStyle = {
-			width: '75%',
-			height: '50%',
-			backgroundColor: '#fff',
-			position: 'absolute',
-			top: '50%',
-			left: '50%',
-			transform: 'translate(-50%, -50%)',
-			zIndex: '9999',
-			background: '#fff'
-		}
-
-		let backdropStyle = {
-			position: 'absolute',
-			width: '100%',
-			height: '100%',
-			top: '0px',
-			left: '0px',
-			zIndex: '9998',
-			background: 'rgba(0, 0, 0, 0.3)'
-		}
-
 		return (
 		<div>
-			<div style={modalStyle}>
-				<button onClick={this.close}>Close</button>
-				<form onSubmit={this.handleSubmit}>
+			<div className="modal">
+				<button className="modal__close-btn" onClick={this.close}>Close</button>
+				<form>
 					<label>
 						Title:
 						<input type="text" value={this.state.taskTitle} onChange={this.handleTaskTitleChange} />
@@ -105,7 +82,7 @@ class CreateTaskModal extends React.Component {
 					<br /><br />
 					<label>
 						Due Date:
-						<input type='date' value={this.state.taskDueDate} onChange={this.handleTaskDueDateChange} />
+						<input type="date" value={this.state.taskDueDate} onChange={this.handleTaskDueDateChange} />
 					</label>
 					<br /><br />
 					<label>
@@ -113,11 +90,11 @@ class CreateTaskModal extends React.Component {
 						<textarea value={this.state.taskDescription} onChange={this.handleTaskDescriptionChange}></textarea>
 					</label>
 					<br /><br />
-					<input type="submit" value="Submit" />
+					<button className="modal__submit-btn" onClick={this.handleSubmit}>Submit</button>
 				</form>
 			</div>
 			
-			<div style={backdropStyle} onClick={e => this.close(e)}></div>
+			<div className="backdrop" onClick={e => this.close(e)}></div>
 		</div>
 		);
 	}

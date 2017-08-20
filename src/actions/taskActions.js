@@ -1,5 +1,5 @@
 import fire from '../fire';
-import { RECEIVE_TASK, DELETE_TASK, LOADING_TASKS, LOADING_TASKS_SUCCESS } from '../constants/task-constants';
+import { RECEIVE_TASK, DELETE_TASK, LOADING_TASKS, LOADING_TASKS_SUCCESS } from '../constants/taskConstants';
 
 export function addTask(task) {
     let userId = fire.auth().currentUser.uid;

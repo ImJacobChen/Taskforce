@@ -60,7 +60,7 @@ class TaskList extends React.Component {
         });
         for (var key in sortedTasksObject) {
             // Create seperator with object key (due date).
-            tasksGroupedAndSeperatedByDate.push(<TaskSeperator date={key} />);
+            tasksGroupedAndSeperatedByDate.push(<TaskSeperator key={key} date={key} />);
 
             // Add the tasks falling under this date
             sortedTasksObject[key].forEach(function(task) {
