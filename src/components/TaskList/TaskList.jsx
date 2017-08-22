@@ -22,7 +22,7 @@ const TaskSeperator = (props) => {
     );
 }
 
-class TaskList extends React.Component {
+export class TaskList extends React.Component {
     componentDidMount() {
         this.props.subscribeToTasks();
     }
