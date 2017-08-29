@@ -49,15 +49,36 @@ export class TaskList extends React.Component {
         const tasksGroupedAndSeperatedByDate = [];
         const sortedTasksObject = {};
         let taskDueDate = null;
+
         tasksToSortByDueDate.forEach(function(task) {
+
+            /**
+             * If the task.dueDate is different to the stored ^
+             * due date then create a new node on the sorted
+             * tasks object and add the task
+             * 
+             * Else add the task to the node which already has
+             * the same date as the task to be added.
+             */
             if (task.dueDate !== taskDueDate) {
                 sortedTasksObject[task.dueDate] = [task];
             } else if (task.dueDate === taskDueDate) {
                 sortedTasksObject[task.dueDate].push(task);
             }
 
+            /**
+             * Update the stored taskDueDate with the latest
+             * task.dueDate
+             */
             taskDueDate = task.dueDate;
         });
+
+        /**
+         * Loop through the sorted tasks object and add the tasks
+         * to the tasksGroupedAndSeperatedByDate[] array. When
+         * it encounters the next node in the object with a 
+         * new date - add a <TaskSeperator /> with that date.
+         */
         for (var key in sortedTasksObject) {
             // Create seperator with object key (due date).
             tasksGroupedAndSeperatedByDate.push(<TaskSeperator key={key} date={key} />);
