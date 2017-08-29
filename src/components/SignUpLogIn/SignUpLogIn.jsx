@@ -1,5 +1,6 @@
 import React from 'react';
 import fire from '../../fire';
+import './SignUpLogin.css';
 
 class SignUpLogIn extends React.Component {
     constructor(props) {
@@ -53,22 +54,30 @@ class SignUpLogIn extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className='signUpLogin'>
+                <div className="header">
+                    <h1>Taskforce</h1>
+                </div>
+
                 <h1>Please sign up or in</h1>
-
-                <h2>Sign Up</h2>
-                <form onSubmit={this._onSignUpFormSubmit}>
-                <input type="email" placeholder="Your email" value={this.state.signUpEmail} onChange={this._onSignUpEmailChange} />
-                <input type="password" placeholder="Password" value={this.state.signUpPassword} onChange={this._onSignUpPasswordChange} />
-                <button>Sign up</button>
-                </form>
-
-                <h2>Log In</h2>
-                <form onSubmit={this._onLogInFormSubmit}>
-                <input type="email" placeholder="Your email" value={this.state.logInEmail} onChange={this._onLogInEmailChange} />
-                <input type="password" placeholder="Password" value={this.state.logInPassword} onChange={this._onLogInPasswordChange} />
-                <button>Log In</button>
-                </form>
+                
+                <div className="signUpField">
+                    <h2>Sign Up</h2>
+                    <form onSubmit={this._onSignUpFormSubmit}>
+                        <input type="email" placeholder="Your email" value={this.state.signUpEmail} onChange={this._onSignUpEmailChange} />
+                        <input type="password" placeholder="Password" value={this.state.signUpPassword} onChange={this._onSignUpPasswordChange} />
+                        <button>Sign up</button>
+                    </form>
+                </div>
+                
+                <div className="logInField">
+                    <h2>Log In</h2>
+                    <form onSubmit={this._onLogInFormSubmit}>
+                        <input type="email" placeholder="Your email" value={this.state.logInEmail} onChange={this._onLogInEmailChange} />
+                        <input type="password" placeholder="Password" value={this.state.logInPassword} onChange={this._onLogInPasswordChange} />
+                        <button>Log In</button>
+                    </form>
+                </div>
             </div>
         );
     }
