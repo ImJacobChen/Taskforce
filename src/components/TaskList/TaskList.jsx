@@ -53,16 +53,23 @@ export class TaskList extends React.Component {
         tasksToSortByDueDate.forEach(function(task) {
 
             /**
-             * If the task.dueDate is different to the stored ^
+             * If the date is in the past then skip to the next
+             * date.
+             * 
+             * Else if the task.dueDate is different to the stored ^
              * due date then create a new node on the sorted
              * tasks object and add the task
              * 
              * Else add the task to the node which already has
              * the same date as the task to be added.
              */
-            if (task.dueDate !== taskDueDate) {
+            if (new Date(task.dueDate) < new Date()) {
+                return;
+            }
+            else if (task.dueDate !== taskDueDate) {
                 sortedTasksObject[task.dueDate] = [task];
-            } else if (task.dueDate === taskDueDate) {
+            } 
+            else if (task.dueDate === taskDueDate) {
                 sortedTasksObject[task.dueDate].push(task);
             }
 
