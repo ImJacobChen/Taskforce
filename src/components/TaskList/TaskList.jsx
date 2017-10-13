@@ -97,14 +97,13 @@ export class TaskList extends React.Component {
             });
 
         }
-
         // Return
         return (
             (this.props.loadingTasks === true) 
             ? <LoadingSpinner />
-            : <ul className="tasks">
-                {tasksGroupedAndSeperatedByDate}
-            </ul>
+            : (tasksOrderedByDueDate.length <= 0)
+                ? <h2>Uh oh... You have no tasks. Create some now :D</h2>
+                : <ul className="tasks">{tasksOrderedByDueDate}</ul>
         );
    }
 }
