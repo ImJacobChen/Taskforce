@@ -1,3 +1,25 @@
-.task__dueDate {
-    float: right;
-}
+.task {
+    background-color: #f1f1f1;
+    margin: 5px 0;
+    padding: 10px;
+    list-style-type: none;
+    cursor: pointer; }
+
+.task--is-expanded {
+    padding: 10px 10px 0 10px; }
+    
+    .task__due-date {
+        float: right; }
+
+    .task__expanded-content {
+        display: none;
+        background-color: #fafafa;
+        margin: 10px -10px 0 -10px;
+        padding: 10px; }
+
+    .task--is-expanded .task__expanded-content {
+        display: block; }
+
+        .task__expanded-content__task-description {
+            font-size: 0.75rem;
+        }

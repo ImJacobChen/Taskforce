@@ -30,7 +30,7 @@ export class TaskList extends React.Component {
     render() {
         const tasks = this.props.tasks.map(function(task) {
             return (
-                <Task key={task.key} title={task.title} dueDate={task.dueDate} />
+                <Task key={task.key} title={task.title} dueDate={task.dueDate} description={task.description} />
             );
         });
 
@@ -41,7 +41,7 @@ export class TaskList extends React.Component {
         });
         const tasksOrderedByDueDate = tasksToSortByDueDate.map(function(task) {
             return (
-                <Task key={task.key} title={task.title} dueDate={task.dueDate} />
+                <Task key={task.key} title={task.title} dueDate={task.dueDate} description={task.description} />
             );
         });
 
@@ -93,7 +93,7 @@ export class TaskList extends React.Component {
             // Add the tasks falling under this date
             sortedTasksObject[key].forEach(function(task) {
                 tasksGroupedAndSeperatedByDate
-                    .push(<Task key={task.key} title={task.title} dueDate={task.dueDate} />);
+                    .push(<Task key={task.key} title={task.title} dueDate={task.dueDate} description={task.description} />);
             });
 
         }
