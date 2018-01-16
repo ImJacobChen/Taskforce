@@ -23,7 +23,10 @@ class Task extends Component {
             <li className={this.state.isExpanded ? 'task task--is-expanded' : 'task'} onClick={this.handleClick}>
                 {this.props.title}
                 
-                <span className='task__due-date'>{this.props.dueDate}</span>
+                <div className="task__content-right">
+                    {(this.props.priority != null) ? (<span className="task__priority">{this.props.priority}</span>) : ''}
+                    <span className='task__due-date'>{this.props.dueDate}</span>
+                </div>
                 
                 <div className="task__expanded-content">
                     <p className="task__expanded-content__task-description">

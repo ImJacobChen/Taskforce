@@ -47,9 +47,9 @@ class App extends Component {
   }
 
   signOut() {
-    fire.auth().signOut().then(function() {
+    fire.auth().signOut().then(() => {
       console.log('Signed out');
-    }, function(error) {
+    }).catch((error) => {
       console.log(error);
     });
   }

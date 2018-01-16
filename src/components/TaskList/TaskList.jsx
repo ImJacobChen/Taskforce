@@ -30,7 +30,7 @@ export class TaskList extends React.Component {
     render() {
         const tasks = this.props.tasks.map(function(task) {
             return (
-                <Task key={task.key} title={task.title} dueDate={task.dueDate} description={task.description} />
+                <Task key={task.key} title={task.title} dueDate={task.dueDate} description={task.description} priority={task.priority} />
             );
         });
 
@@ -41,7 +41,7 @@ export class TaskList extends React.Component {
         });
         const tasksOrderedByDueDate = tasksToSortByDueDate.map(function(task) {
             return (
-                <Task key={task.key} title={task.title} dueDate={task.dueDate} description={task.description} />
+                <Task key={task.key} title={task.title} dueDate={task.dueDate} description={task.description} priority={task.priority} />
             );
         });
 
@@ -93,7 +93,7 @@ export class TaskList extends React.Component {
             // Add the tasks falling under this date
             sortedTasksObject[key].forEach(function(task) {
                 tasksGroupedAndSeperatedByDate
-                    .push(<Task key={task.key} title={task.title} dueDate={task.dueDate} description={task.description} />);
+                    .push(<Task key={task.key} title={task.title} dueDate={task.dueDate} description={task.description} priority={task.priority} />);
             });
 
         }
@@ -101,9 +101,9 @@ export class TaskList extends React.Component {
         return (
             (this.props.loadingTasks === true) 
             ? <LoadingSpinner />
-            : (tasksOrderedByDueDate.length <= 0)
+            : (tasksGroupedAndSeperatedByDate.length <= 0)
                 ? <h2>Uh oh... You have no tasks. Create some now :D</h2>
-                : <ul className="tasks">{tasksOrderedByDueDate}</ul>
+                : <ul className="tasks">{tasksGroupedAndSeperatedByDate}</ul>
         );
    }
 }

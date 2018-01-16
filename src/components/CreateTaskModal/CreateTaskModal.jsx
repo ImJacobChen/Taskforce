@@ -12,11 +12,13 @@ export class CreateTaskModal extends React.Component {
 			taskTitle: '',
 			taskDescription: '',
 			taskDueDate: '',
+			taskPriority: 0
 		};
 
 		this.handleTaskTitleChange = this.handleTaskTitleChange.bind(this);
-		this.handleTaskDescriptionChange = this.handleTaskDescriptionChange.bind(this);
 		this.handleTaskDueDateChange = this.handleTaskDueDateChange.bind(this);
+		this.handleTaskPriorityChange = this.handleTaskPriorityChange.bind(this);
+		this.handleTaskDescriptionChange = this.handleTaskDescriptionChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 
 		this.close = this.close.bind(this);
@@ -26,19 +28,24 @@ export class CreateTaskModal extends React.Component {
 		this.setState({taskTitle: event.target.value});
 	}
 
-	handleTaskDescriptionChange(event) {
-		this.setState({taskDescription: event.target.value});
-	}
-
 	handleTaskDueDateChange(event) {
 		this.setState({taskDueDate: event.target.value});
 		//TODO: If date is less than today. Show error.
+	}
+
+	handleTaskPriorityChange(event) {
+		this.setState({taskPriority: event.target.value});
+	}
+
+	handleTaskDescriptionChange(event) {
+		this.setState({taskDescription: event.target.value});
 	}
 
 	handleSubmit() {
 		let task = {
 			title: this.state.taskTitle,
 			dueDate: this.state.taskDueDate,
+			priority: this.state.taskPriority,
 			description: this.state.taskDescription
 		}
 
@@ -77,12 +84,28 @@ export class CreateTaskModal extends React.Component {
 				<form>
 					<label>
 						Title:
-						<input type="text" value={this.state.taskTitle} onChange={this.handleTaskTitleChange} />
+						<input 
+							type="text" 
+							value={this.state.taskTitle} 
+							onChange={this.handleTaskTitleChange} 
+							autoFocus />
 					</label>
 					<br /><br />
 					<label>
 						Due Date:
 						<input type="date" value={this.state.taskDueDate} onChange={this.handleTaskDueDateChange} />
+					</label>
+					<br /><br />
+					<label>
+						Priority:
+						<select value={this.state.taskPriority} onChange={this.handleTaskPriorityChange}>
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</select>
 					</label>
 					<br /><br />
 					<label>
