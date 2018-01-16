@@ -1,5 +1,6 @@
 import React from 'react';
 import fire from '../../fire';
+import './SignUpLogin.css';
 
 class SignUpLogIn extends React.Component {
     constructor(props) {
@@ -8,8 +9,11 @@ class SignUpLogIn extends React.Component {
         this.state = {
             signUpEmail: '',
             signUpPassword: '',
+            signUpError: null,
+
             logInEmail: '',
-            logInPassword: ''
+            logInPassword: '',
+            logInError: null
         };
         
         this._onSignUpEmailChange = this._onSignUpEmailChange.bind(this);
@@ -30,8 +34,11 @@ class SignUpLogIn extends React.Component {
     }
 
     _onSignUpFormSubmit(event) {
-        fire.auth().createUserWithEmailAndPassword(this.state.signUpEmail, this.state.signUpPassword).catch(function(error) {
-          console.log(error);
+        var self = this;
+        fire.auth().createUserWithEmailAndPassword(this.state.signUpEmail, this.state.signUpPassword).then(function(){
+            self.setState({signUpError: null})
+        }).catch(function(error) {
+            self.setState({signUpError: error.message})
         });
         event.preventDefault();
     }
@@ -45,30 +52,49 @@ class SignUpLogIn extends React.Component {
     }
 
     _onLogInFormSubmit(event) {
-        fire.auth().signInWithEmailAndPassword(this.state.logInEmail, this.state.logInPassword).catch(function(error) {
-          console.log(error);
+        var self = this;
+        fire.auth().signInWithEmailAndPassword(this.state.logInEmail, this.state.logInPassword).then(function(){
+            self.setState({logInError: null})
+        }).catch(function(error) {
+            self.setState({logInError: error.message})
         });
         event.preventDefault();
     }
 
     render() {
         return (
-            <div>
+            <div className='signUpLogin'>
+                <div className="header">
+                    <h1>Taskforce</h1>
+                </div>
+
                 <h1>Please sign up or in</h1>
-
-                <h2>Sign Up</h2>
-                <form onSubmit={this._onSignUpFormSubmit}>
-                <input type="email" placeholder="Your email" value={this.state.signUpEmail} onChange={this._onSignUpEmailChange} />
-                <input type="password" placeholder="Password" value={this.state.signUpPassword} onChange={this._onSignUpPasswordChange} />
-                <button>Sign up</button>
-                </form>
-
-                <h2>Log In</h2>
-                <form onSubmit={this._onLogInFormSubmit}>
-                <input type="email" placeholder="Your email" value={this.state.logInEmail} onChange={this._onLogInEmailChange} />
-                <input type="password" placeholder="Password" value={this.state.logInPassword} onChange={this._onLogInPasswordChange} />
-                <button>Log In</button>
-                </form>
+                
+                <div className="signUpField">
+                    <h2>Sign Up</h2>
+                    <form onSubmit={this._onSignUpFormSubmit}>
+                        {(this.state.signUpError) 
+                            ? <div class='logInField__error'>{this.state.signUpError}</div>
+                            : ''
+                        }
+                        <input type="email" placeholder="Your email" value={this.state.signUpEmail} onChange={this._onSignUpEmailChange} />
+                        <input type="password" placeholder="Password" value={this.state.signUpPassword} onChange={this._onSignUpPasswordChange} />
+                        <button>Sign up</button>
+                    </form>
+                </div>
+                
+                <div className="logInField">
+                    <h2>Log In</h2>
+                    <form onSubmit={this._onLogInFormSubmit}>
+                        {(this.state.logInError) 
+                            ? <div class='logInField__error'>{this.state.logInError}</div>
+                            : ''
+                        }
+                        <input type="email" placeholder="Your email" value={this.state.logInEmail} onChange={this._onLogInEmailChange} />
+                        <input type="password" placeholder="Password" value={this.state.logInPassword} onChange={this._onLogInPasswordChange} />
+                        <button>Log In</button>
+                    </form>
+                </div>
             </div>
         );
     }

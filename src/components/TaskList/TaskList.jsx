@@ -1,109 +1,129 @@
 import React from 'react';
-import fire from '../../fire';
-import moment from 'moment';
+import './TaskList.css';
+
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {addTask, subscribeToTasks} from '../../actions/taskActions';
 
 import Task from '../Task/Task';
 
-const database = fire.database();
-
-const TasksSeperator = function(props) {
+const LoadingSpinner = (props) => {
     return (
-        <li className='task-seperator'>
-            <p>{props.text}</p>
-            <div></div> 
+        <div className='loading-overlay'><div className='loading-spinner'></div></div>
+    );
+}
+
+const TaskSeperator = (props) => {
+    return (
+        <li className='taskSeperator' key={props.date}>
+            <span className='taskSeperator__text'>{props.date}</span>
+            <span className='taskSeperator__line'></span>
         </li>
     );
 }
 
-class TaskList extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            tasks: [],
-        }
-
-        this.refreshTasks = this.refreshTasks.bind(this);
+export class TaskList extends React.Component {
+    componentDidMount() {
+        this.props.subscribeToTasks();
     }
 
-    componentWillMount() {
-        var self = this;
-
-        var tasksRef = database.ref(this.props.user.uid + '/tasks');
-
-        tasksRef.on('child_added', function(data) {
-          self.refreshTasks();
+    render() {
+        const tasks = this.props.tasks.map(function(task) {
+            return (
+                <Task key={task.key} title={task.title} dueDate={task.dueDate} description={task.description} priority={task.priority} />
+            );
         });
 
-        tasksRef.on('child_changed', function(data) {
-          self.refreshTasks();
+        //Tasks ordered by due date
+        const tasksToSortByDueDate = this.props.tasks.slice(0);
+        tasksToSortByDueDate.sort(function(a, b) {
+            return (new Date(a.dueDate) > new Date(b.dueDate));
         });
-    
-        tasksRef.on('child_removed', function(data) {
-          self.refreshTasks();
-        });
-    }
-
-    deleteTask(taskKey) {
-        var tasksRef = database.ref(this.props.user.uid + '/tasks');
-        tasksRef.child(taskKey).remove();
-    }
-
-    refreshTasks() {
-        var tasks = [];
-
-        var tasksRef = database.ref(this.props.user.uid + '/tasks');
-        tasksRef.once('value', function(snapshot) {
-            snapshot.forEach(function(child) {
-                var task = child.val();
-                task.key = child.key;
-                tasks.push(task);
-            });
+        const tasksOrderedByDueDate = tasksToSortByDueDate.map(function(task) {
+            return (
+                <Task key={task.key} title={task.title} dueDate={task.dueDate} description={task.description} priority={task.priority} />
+            );
         });
 
-        this.setState({ tasks: tasks });
-    }
+        // Grouped by date tasks object
+        const tasksGroupedAndSeperatedByDate = [];
+        const sortedTasksObject = {};
+        let taskDueDate = null;
 
-   render() {
-        var tasks = this.state.tasks;
-        var tasksLength = tasks.length;
-        var structuredTasks = [];
-        
-        // Sort tasks in date order.
-        tasks.sort(function(a, b) {
-            return new Date(a.taskDueDate).getTime() - new Date(b.taskDueDate).getTime()
-        });
+        tasksToSortByDueDate.forEach(function(task) {
 
-        // Begin with today element in task list
-        structuredTasks.push(<TasksSeperator text='today' />);
-
-        var previousTaskDate = moment();
-
-        for(var i=0; i<tasksLength; i++) {
-            var task = tasks[i];
-
-            var today = moment();
-            var taskDate = moment(task.taskDueDate);
-
-            // If taskDate is same as today
-            if (taskDate.isSame(previousTaskDate, 'day')) {
-                structuredTasks.push(<Task key={task.key} task={task.taskText} taskKey={task.key} deleteTask={this.deleteTask.bind(this)} />);
-            } else {
-                if (!taskDate.isBefore(today)) {
-                    structuredTasks.push(<TasksSeperator text={today.to(taskDate)} />);
-                    structuredTasks.push(<Task key={task.key} task={task.taskText} taskKey={task.key} deleteTask={this.deleteTask.bind(this)} />);
-                }
+            /**
+             * If the date is in the past then skip to the next
+             * date.
+             * 
+             * Else if the task.dueDate is different to the stored ^
+             * due date then create a new node on the sorted
+             * tasks object and add the task
+             * 
+             * Else add the task to the node which already has
+             * the same date as the task to be added.
+             */
+            if (new Date(task.dueDate) < new Date()) {
+                return;
+            }
+            else if (task.dueDate !== taskDueDate) {
+                sortedTasksObject[task.dueDate] = [task];
+            } 
+            else if (task.dueDate === taskDueDate) {
+                sortedTasksObject[task.dueDate].push(task);
             }
 
-            previousTaskDate = taskDate;
-        }
+            /**
+             * Update the stored taskDueDate with the latest
+             * task.dueDate
+             */
+            taskDueDate = task.dueDate;
+        });
 
+        /**
+         * Loop through the sorted tasks object and add the tasks
+         * to the tasksGroupedAndSeperatedByDate[] array. When
+         * it encounters the next node in the object with a 
+         * new date - add a <TaskSeperator /> with that date.
+         */
+        for (var key in sortedTasksObject) {
+            // Create seperator with object key (due date).
+            tasksGroupedAndSeperatedByDate.push(<TaskSeperator key={key} date={key} />);
+
+            sortedTasksObject[key].sort(function(a, b) {
+                return a.priority < b.priority;
+            });
+
+            // Add the tasks falling under this date
+            sortedTasksObject[key].forEach(function(task) {
+                tasksGroupedAndSeperatedByDate
+                    .push(<Task key={task.key} title={task.title} dueDate={task.dueDate} description={task.description} priority={task.priority} />);
+            });
+
+        }
+        // Return
         return (
-            <ul className="tasks">
-            {structuredTasks}
-            </ul>
+            (this.props.loadingTasks === true) 
+            ? <LoadingSpinner />
+            : (tasksGroupedAndSeperatedByDate.length <= 0)
+                ? <h2>Uh oh... You have no tasks. Create some now :D</h2>
+                : <ul className="tasks">{tasksGroupedAndSeperatedByDate}</ul>
         );
    }
 }
 
-export default TaskList;
+function mapStateToProps(state) {
+    return {
+        tasks: state.tasks.tasks,
+        loadingTasks: state.tasks.loadingTasks
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        addTask: addTask,
+        subscribeToTasks: subscribeToTasks
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskList);

@@ -16,6 +16,7 @@
   color: white;
   position: fixed;
   top: 0;
+  z-index: 2;
 }
 
 .App-header h1 {
@@ -24,7 +25,6 @@
 }
 
 .App-header-createTaskButton {
-  display: inline-block;
   background-color: lightgreen;
   border: none;
   padding: 8px;
@@ -33,7 +33,6 @@
 }
 
 .App-header-signOutButton {
-  display: inline-block;
   background-color: red;
   border: none;
   padding: 8px;
@@ -45,13 +44,6 @@
   display: block;
   margin: 0 auto;
   width: 80%;
-}
-
-.task {
-  background-color: #f1f1f1;
-  margin: 5px 0;
-  padding: 10px;
-  list-style-type: none;
 }
 
 .task-seperator {

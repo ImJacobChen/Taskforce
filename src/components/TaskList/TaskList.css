@@ -1,0 +1,40 @@
+.loading-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+.loading-spinner {
+    width: 30px;
+    height: 30px;
+    animation-duration: 0.75s;
+    animation-iteration-count: infinite;
+    animation-name: rotate-spinner;
+    animation-timing-function: linear;
+    border: 8px solid black;
+    border-right-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+@keyframes rotate-spinner {
+  0%    { transform:rotate(0deg); }
+  100%  { transform:rotate(360deg); }
+}
+
+.taskSeperator {
+    display: table;
+    width: 100%;
+    margin-top: 75px;
+}
+.taskSeperator__text {
+    display: table-cell;
+    width: 22%;
+}
+.taskSeperator__line {
+    display: table-cell;
+    border-bottom: 2px solid black;
+}
