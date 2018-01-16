@@ -90,6 +90,10 @@ export class TaskList extends React.Component {
             // Create seperator with object key (due date).
             tasksGroupedAndSeperatedByDate.push(<TaskSeperator key={key} date={key} />);
 
+            sortedTasksObject[key].sort(function(a, b) {
+                return a.priority < b.priority;
+            });
+
             // Add the tasks falling under this date
             sortedTasksObject[key].forEach(function(task) {
                 tasksGroupedAndSeperatedByDate

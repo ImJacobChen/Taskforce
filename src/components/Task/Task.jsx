@@ -30,7 +30,7 @@ class Task extends Component {
                 
                 <div className="task__expanded-content">
                     <p className="task__expanded-content__task-description">
-                        {this.props.description}
+                        {(this.props.description != "") ? this.props.description : '*No description'}
                     </p>
                 </div>
             </li>

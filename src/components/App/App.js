@@ -56,9 +56,7 @@ class App extends Component {
 
   render() {
     if (!this.state.user) {
-      return (
-        <SignUpLogIn />
-      );
+      return <SignUpLogIn />;
     } else {
       return (
         <Provider store={store}>
