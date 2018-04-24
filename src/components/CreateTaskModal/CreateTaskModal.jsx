@@ -1,11 +1,17 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {addTask} from '../../actions/taskActions';
 import './CreateTaskModal.css';
+
+import fire from '../../fire';
+import moment from 'moment';
+
+import { addTask } from '../../redux/actions/taskActions';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 export class CreateTaskModal extends React.Component {
 	constructor(props) {
+
 		super(props);
 
 		this.state = {
@@ -22,6 +28,7 @@ export class CreateTaskModal extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 
 		this.close = this.close.bind(this);
+
 	}
 
 	handleTaskTitleChange(event) {
@@ -42,10 +49,11 @@ export class CreateTaskModal extends React.Component {
 	}
 
 	handleSubmit() {
+
 		let task = {
 			title: this.state.taskTitle,
-			dueDate: this.state.taskDueDate,
-			priority: this.state.taskPriority,
+			dueDate: moment(this.state.taskDueDate).valueOf(),
+			priority: parseInt(this.state.taskPriority),
 			description: this.state.taskDescription
 		}
 
@@ -59,8 +67,8 @@ export class CreateTaskModal extends React.Component {
 			return;
 		}
 
-		this.props.addTask(task)
-		this.close()
+		this.props.addTask(task);
+		this.close();
 	}
 
 	close() {
@@ -70,55 +78,58 @@ export class CreateTaskModal extends React.Component {
 				taskTitle: '',
 				taskDescription: '',
 				taskDueDate: '',
+				taskPriority: 0
 			});
 		}
 	}
 
 	render() {
-		if (this.props.isOpen === false) return null
-
+		
+		if (this.props.isOpen === false) {
+			return null
+		}
+		
 		return (
-		<div>
-			<div className="modal">
-				<button className="modal__close-btn" onClick={this.close}>Close</button>
-				<form>
-					<label>
-						Title:
-						<input 
-							type="text" 
-							value={this.state.taskTitle} 
-							onChange={this.handleTaskTitleChange} 
-							autoFocus />
-					</label>
-					<br /><br />
-					<label>
-						Due Date:
-						<input type="date" value={this.state.taskDueDate} onChange={this.handleTaskDueDateChange} />
-					</label>
-					<br /><br />
-					<label>
-						Priority:
-						<select value={this.state.taskPriority} onChange={this.handleTaskPriorityChange}>
-							<option value="0">0</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-						</select>
-					</label>
-					<br /><br />
-					<label>
-						Description:
-						<textarea value={this.state.taskDescription} onChange={this.handleTaskDescriptionChange}></textarea>
-					</label>
-					<br /><br />
-					<button className="modal__submit-btn" onClick={this.handleSubmit}>Submit</button>
-				</form>
+			<div>
+				<div className="modal">
+					<button className="modal__close-btn" onClick={this.close}>Close</button>
+					<div className="modal__form">
+						<label>
+							Title:
+							<input 
+								type="text" 
+								value={this.state.taskTitle} 
+								onChange={this.handleTaskTitleChange} 
+								autoFocus />
+						</label>
+						<br /><br />
+						<label>
+							Due Date:
+							<input type="date" value={this.state.taskDueDate} onChange={this.handleTaskDueDateChange} />
+						</label>
+						<br /><br />
+						<label>
+							Priority:
+							<select value={this.state.taskPriority} onChange={this.handleTaskPriorityChange}>
+								<option value={0}>Top</option>
+								{this.props.tasks.map((task, index) => {
+									return <option key={index} value={index}>(Higher than) {task.title}</option>;
+								})}
+								<option value={this.props.tasks.length}>Last</option>
+							</select>
+						</label>
+						<br /><br />
+						<label>
+							Description:
+							<textarea value={this.state.taskDescription} onChange={this.handleTaskDescriptionChange}></textarea>
+						</label>
+						<br /><br />
+						<button className="modal__submit-btn" onClick={this.handleSubmit}>Submit</button>
+					</div>
+				</div>
+				
+				<div className="backdrop" onClick={e => this.close(e)}></div>
 			</div>
-			
-			<div className="backdrop" onClick={e => this.close(e)}></div>
-		</div>
 		);
 	}
 }
@@ -130,7 +141,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-	return bindActionCreators({addTask: addTask}, dispatch);
+	return bindActionCreators({
+        addTask
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTaskModal);

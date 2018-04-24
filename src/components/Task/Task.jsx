@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import moment from 'moment';
 import './Task.css';
 
 class Task extends Component {
@@ -25,12 +26,12 @@ class Task extends Component {
                 
                 <div className="task__content-right">
                     {(this.props.priority != null) ? (<span className="task__priority">{this.props.priority}</span>) : ''}
-                    <span className='task__due-date'>{this.props.dueDate}</span>
+                    <span className='task__due-date'>{moment(parseInt(this.props.dueDate)).format("dddd Do MMMM YYYY")}</span>
                 </div>
                 
                 <div className="task__expanded-content">
                     <p className="task__expanded-content__task-description">
-                        {(this.props.description != "") ? this.props.description : '*No description'}
+                        {(this.props.description !== "") ? this.props.description : '*No description'}
                     </p>
                 </div>
             </li>

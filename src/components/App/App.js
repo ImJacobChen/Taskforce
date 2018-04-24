@@ -5,18 +5,22 @@ import {Provider} from 'react-redux';
 
 import {createStore, applyMiddleware} from 'redux';
 import logger from 'redux-logger';
-import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
 
-import reducers from '../../reducers/index';
+import reducers from '../../redux/reducers/index';
+import rootSaga from '../../redux/sagas';
 
-import fire from '../../fire';
+import {fire} from '../../fire';
 
 import SignUpLogIn from '../SignUpLogIn/SignUpLogIn';
 import CreateTaskModal from '../CreateTaskModal/CreateTaskModal';
 import TaskList from '../TaskList/TaskList';
 
-const middleware = applyMiddleware(thunk, logger);
+const sagaMiddleware = createSagaMiddleware();
+
+const middleware = applyMiddleware(sagaMiddleware, logger);
 const store = createStore(reducers, middleware);
+sagaMiddleware.run(rootSaga);
 
 class App extends Component {
   constructor(props) {

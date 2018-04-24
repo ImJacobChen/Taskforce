@@ -1,9 +1,17 @@
 import React from 'react';
 import './TaskList.css';
 
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {addTask, subscribeToTasks} from '../../actions/taskActions';
+import moment from 'moment';
+import {fire} from '../../fire';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {
+    receiveTask,
+    loadingTasks,
+    loadingTasksSuccess,
+    loadingTasksFailed
+} from '../../redux/actions/taskActions';
 
 import Task from '../Task/Task';
 
@@ -16,15 +24,41 @@ const LoadingSpinner = (props) => {
 const TaskSeperator = (props) => {
     return (
         <li className='taskSeperator' key={props.date}>
-            <span className='taskSeperator__text'>{props.date}</span>
+            <span className='taskSeperator__text'>{moment(parseInt(props.date)).format("Do MMMM")}</span>
             <span className='taskSeperator__line'></span>
         </li>
     );
 }
 
 export class TaskList extends React.Component {
+
     componentDidMount() {
-        this.props.subscribeToTasks();
+
+        let self = this;
+        let first
+        this.props.loadingTasks();
+
+        try {
+
+            let tasks = fire.database().ref('/tasks/' + fire.auth().currentUser.uid);
+
+            tasks
+            .orderByChild("dueDate")
+            .startAt(new Date().getTime())
+            .on('child_added', function(data) {
+                let task = data.val();
+                task.key = data.key;
+                self.props.receiveTask(task);
+            });
+
+            this.props.loadingTasksSuccess();
+
+        } catch(err) {
+
+            this.props.loadingTasksFailed(err);
+
+        }
+        
     }
 
     render() {
@@ -91,7 +125,7 @@ export class TaskList extends React.Component {
             tasksGroupedAndSeperatedByDate.push(<TaskSeperator key={key} date={key} />);
 
             sortedTasksObject[key].sort(function(a, b) {
-                return a.priority < b.priority;
+                return b.priority < a.priority;
             });
 
             // Add the tasks falling under this date
@@ -102,27 +136,35 @@ export class TaskList extends React.Component {
 
         }
         // Return
-        return (
-            (this.props.loadingTasks === true) 
-            ? <LoadingSpinner />
-            : (tasksGroupedAndSeperatedByDate.length <= 0)
-                ? <h2>Uh oh... You have no tasks. Create some now :D</h2>
-                : <ul className="tasks">{tasksGroupedAndSeperatedByDate}</ul>
-        );
+        if (this.props.tasksState === 'loading') {
+            return <LoadingSpinner />
+        } else if (this.props.tasksState === 'failed') {
+            return (
+                <h2>Failed to load tasks</h2>
+            );
+        } else {
+            return (
+                (tasksGroupedAndSeperatedByDate.length <= 0)
+                    ? <h2>Oh... You have no tasks. Create some now :D</h2>
+                    : <ul className="tasks">{tasksGroupedAndSeperatedByDate}</ul>
+            );
+        }
    }
 }
 
 function mapStateToProps(state) {
     return {
         tasks: state.tasks.tasks,
-        loadingTasks: state.tasks.loadingTasks
+        tasksState: state.tasks.tasksState
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        addTask: addTask,
-        subscribeToTasks: subscribeToTasks
+        receiveTask,
+        loadingTasks,
+        loadingTasksSuccess,
+        loadingTasksFailed
     }, dispatch);
 }
 
