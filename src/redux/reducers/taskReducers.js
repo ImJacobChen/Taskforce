@@ -1,16 +1,19 @@
-import { ADD_TASK, RECEIVE_TASK, DELETE_TASK, LOADING_TASKS, LOADING_TASKS_SUCCESS } from '../constants/taskConstants';
+import { 
+    ADD_TASK, 
+    RECEIVE_TASK, 
+    DELETE_TASK, 
+    LOADING_TASKS, 
+    LOADING_TASKS_SUCCESS,
+    LOADING_TASKS_FAILED
+} from '../constants/taskConstants';
 
 const initialState = {
     tasks: [],
-    loadingTasks: false
+    tasksState: 'idle'
 };
 
 export function taskReducers(state = initialState, action) {
     switch(action.type) {
-
-        case ADD_TASK: 
-            let tasks = state.tasks.concat(action.payload);
-            return state = {tasks};
 
         case RECEIVE_TASK:
             return Object.assign({}, state, {
@@ -31,12 +34,17 @@ export function taskReducers(state = initialState, action) {
 
         case LOADING_TASKS:
             return Object.assign({}, state, {
-                loadingTasks: true,
+                tasksState: 'loading',
             });
 
         case LOADING_TASKS_SUCCESS:
             return Object.assign({}, state, {
-                loadingTasks: false,
+                tasksState: 'success',
+            });
+
+        case LOADING_TASKS_FAILED:
+            return Object.assign({}, state, {
+                tasksState: 'failed',
             });
         
         default:
