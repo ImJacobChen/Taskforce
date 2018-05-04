@@ -8,12 +8,14 @@ import {
     LOADING_TASKS_FAILED
 } from '../constants/taskConstants';
 
+import updateTaskInAListOfTasks from '../../utilities/taskUtilities/updateTaskInAListOfTasks';
+
 const initialState = {
     tasks: [],
     tasksState: 'idle'
 };
 
-export function taskReducers(state = initialState, action) {
+export default function taskReducer(state = initialState, action) {
     switch(action.type) {
 
         case RECEIVE_TASK:
@@ -22,18 +24,9 @@ export function taskReducers(state = initialState, action) {
             });
 
         case UPDATE_TASK:
-            // Copy tasks
-            const tasks = state.tasks.slice(0);
-            const tasksLength = tasks.length;
-
-            // Find matching key
-            for (let i=0; i < tasksLength; i++) {
-                if (action.payload.key === tasks[i].key) {
-                    tasks[i] = action.payload;
-                }
-            }
-
-            return Object.assign({}, state, { tasks });
+            return Object.assign({}, state, { 
+                tasks: updateTaskInAListOfTasks(state.tasks, action.payload)
+            });
 
         case REPLACE_TASKS:
             return Object.assign({}, state, { tasks: action.payload });

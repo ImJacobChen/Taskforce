@@ -25,7 +25,7 @@ describe('<App />', () => {
     const wrapper = shallow(<App />);
     wrapper.setState({ user: true, isCreateTaskModalOpen: false, });
 
-    wrapper.find('.App-header-createTaskButton').simulate('click');
+    wrapper.find('.app__header__createTaskButton').simulate('click');
     expect(openCreateTaskModalMock.mock.calls.length).toBe(1);
   });
 
@@ -36,7 +36,7 @@ describe('<App />', () => {
     const wrapper = shallow(<App />);
     wrapper.setState({ user: true, isCreateTaskModalOpen: false });
 
-    wrapper.find('.App-header-signOutButton').simulate('click');
+    wrapper.find('.app__header__signOutButton').simulate('click');
     expect(signOutMock.mock.calls.length).toBe(1);
   });
 

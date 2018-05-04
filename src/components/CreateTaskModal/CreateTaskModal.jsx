@@ -111,10 +111,10 @@ export class CreateTaskModal extends React.Component {
 							Priority:
 							<select value={this.state.taskPriority} onChange={this.handleTaskPriorityChange}>
 								<option value={0}>Top</option>
-								{this.props.tasks.map((task, index) => {
+								{this.props.tasks && this.props.tasks.map((task, index) => {
 									return <option key={index} value={index}>(Higher than) {task.title}</option>;
 								})}
-								<option value={this.props.tasks.length}>Last</option>
+								{this.props.tasks && <option value={this.props.tasks.length}>Last</option>}
 							</select>
 						</label>
 						<br /><br />

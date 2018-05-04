@@ -12,7 +12,7 @@ import {
 const database = fire.database();
 const auth = fire.auth();
 
-function createEventChannel() {
+export function createFirebaseEventChannel() {
     
     const tasksRef = database.ref('/tasks/' + auth.currentUser.uid);
     
@@ -22,6 +22,7 @@ function createEventChannel() {
         tasksRef.orderByChild("dueDate")
         .startAt(new Date().getTime())
         .on('value', data => {
+            console.log('VALUE', data.val());
             data = data.val();
             let tasks = [];
             for (let key in data) {
@@ -32,6 +33,24 @@ function createEventChannel() {
             emit({ type: REPLACE_TASKS, payload: tasks });
         });
 
+        tasksRef.orderByChild("dueDate")
+        .startAt(new Date().getTime())
+        .on('child_added', (data, prevChildKey) => {
+            console.log('CHILD_ADDED', data.val(), prevChildKey);
+        });
+
+        tasksRef.orderByChild("dueDate")
+        .startAt(new Date().getTime())
+        .on('child_changed', (data, prevChildKey) => {
+            console.log('CHILD_CHANGED', data.val(), prevChildKey);
+        });
+
+        tasksRef.orderByChild("dueDate")
+        .startAt(new Date().getTime())
+        .on('child_moved', (data, prevChildKey) => {
+            console.log('CHILD_MOVED', data.val(), prevChildKey);
+        });
+
         return () => tasksRef.off();
 
     });
@@ -40,10 +59,10 @@ function createEventChannel() {
 
 }
 
-function* subscribeToTasks() {
+export function* subscribeToTasks() {
     
     // Create channel.
-    const chan = createEventChannel();
+    const chan = createFirebaseEventChannel();
 
     // Receive data from channel
     while (true) {
