@@ -12,18 +12,23 @@ export function* addTask(action) {
         // Update task prioritys
         var updatedTasks = {};
         state.tasks.tasks.slice(action.payload.priority).forEach((task, index) => {
-            
             updatedTasks[task.key] = {
                 title: task.title,
                 description: task.description,
                 priority: index + 1,
                 dueDate: task.dueDate,
             };
-
         });
+        updatedTasks[action.payload.key] = {
+            title: action.payload.title,
+            description: action.payload.description,
+            priority: action.payload.priority,
+            dueDate: action.payload.dueDate
+        }
+        console.log('Updated tasks', updatedTasks);
 
         yield apply(tasksRef, tasksRef.update, [updatedTasks]);
-        yield apply(tasksRef, tasksRef.push, [taskToAdd]);
+        //yield apply(tasksRef, tasksRef.push, [taskToAdd]);
     } catch (err) {
         console.log(err);
     }

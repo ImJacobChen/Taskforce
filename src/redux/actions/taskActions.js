@@ -1,7 +1,11 @@
 import { 
     ADD_TASK,
     RECEIVE_TASK,
+    UPDATE_TASK,
+    REPLACE_TASKS,
     DELETE_TASK,
+    SUBSCRIBE_TO_TASKS,
+    UNSUBSCRIBE_TO_TASKS,
     LOADING_TASKS, 
     LOADING_TASKS_SUCCESS,
     LOADING_TASKS_FAILED
@@ -21,10 +25,36 @@ export function receiveTask(task) {
     }
 }
 
+export function updateTask(task) {
+    return {
+        type: UPDATE_TASK,
+        payload: task
+    }
+}
+
+export function replaceTasks(tasks) {
+    return {
+        type: REPLACE_TASKS,
+        payload: tasks
+    }
+}
+
 export function deleteTask(task) {
     return {
         type: DELETE_TASK,
         payload: task
+    }
+}
+
+export function subscribeToTasks() {
+    return {
+        type: SUBSCRIBE_TO_TASKS
+    }
+}
+
+export function unsubscribeToTasks() {
+    return {
+        type: UNSUBSCRIBE_TO_TASKS
     }
 }
 

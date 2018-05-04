@@ -64,18 +64,18 @@ class App extends Component {
     } else {
       return (
         <Provider store={store}>
-          <div className="App">
-            <div className="App-header">
+          <div className="app">
+            <div className="app__header">
               <h1>Taskforce</h1>
 
               <button 
-                className="App-header-createTaskButton"
+                className="btn app__header__createTaskButton"
                 onClick={this.openCreateTaskModal.bind(this)}>
                 Create task
               </button>
 
               <button 
-                className="App-header-signOutButton"
+                className="btn app__header__signOutButton"
                 onClick={this.signOut}>
                 Sign out
               </button>

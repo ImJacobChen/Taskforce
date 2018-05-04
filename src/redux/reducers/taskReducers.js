@@ -1,6 +1,7 @@
 import { 
-    ADD_TASK, 
-    RECEIVE_TASK, 
+    RECEIVE_TASK,
+    UPDATE_TASK,
+    REPLACE_TASKS,
     DELETE_TASK, 
     LOADING_TASKS, 
     LOADING_TASKS_SUCCESS,
@@ -19,6 +20,23 @@ export function taskReducers(state = initialState, action) {
             return Object.assign({}, state, {
                 tasks: state.tasks.concat([action.payload])
             });
+
+        case UPDATE_TASK:
+            // Copy tasks
+            const tasks = state.tasks.slice(0);
+            const tasksLength = tasks.length;
+
+            // Find matching key
+            for (let i=0; i < tasksLength; i++) {
+                if (action.payload.key === tasks[i].key) {
+                    tasks[i] = action.payload;
+                }
+            }
+
+            return Object.assign({}, state, { tasks });
+
+        case REPLACE_TASKS:
+            return Object.assign({}, state, { tasks: action.payload });
 
         case DELETE_TASK:
             const tasksToDelete = state.tasks.slice(0);

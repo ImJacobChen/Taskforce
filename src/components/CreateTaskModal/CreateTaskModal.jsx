@@ -1,7 +1,6 @@
 import React from 'react';
 import './CreateTaskModal.css';
 
-import fire from '../../fire';
 import moment from 'moment';
 
 import { addTask } from '../../redux/actions/taskActions';
@@ -53,7 +52,7 @@ export class CreateTaskModal extends React.Component {
 		let task = {
 			title: this.state.taskTitle,
 			dueDate: moment(this.state.taskDueDate).valueOf(),
-			priority: parseInt(this.state.taskPriority),
+			priority: parseInt(this.state.taskPriority, 10),
 			description: this.state.taskDescription
 		}
 

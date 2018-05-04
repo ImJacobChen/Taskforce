@@ -2,7 +2,6 @@ import React from 'react';
 import './TaskList.css';
 
 import moment from 'moment';
-import {fire} from '../../fire';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -10,7 +9,9 @@ import {
     receiveTask,
     loadingTasks,
     loadingTasksSuccess,
-    loadingTasksFailed
+    loadingTasksFailed,
+    subscribeToTasks,
+    unsubscribeToTasks
 } from '../../redux/actions/taskActions';
 
 import Task from '../Task/Task';
@@ -24,39 +25,85 @@ const LoadingSpinner = (props) => {
 const TaskSeperator = (props) => {
     return (
         <li className='taskSeperator' key={props.date}>
-            <span className='taskSeperator__text'>{moment(parseInt(props.date)).format("Do MMMM")}</span>
+            <span className='taskSeperator__text'>{moment(parseInt(props.date, 10)).format("Do MMMM")}</span>
             <span className='taskSeperator__line'></span>
         </li>
     );
+}
+
+const sort_options = {
+    date_unset_dates_first: 'Date (Unset dates first)',
+    date_set_dates_first: 'Date (Set dates first)',
+    priority: 'Priority'
+};
+
+class FilterBar extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            dropdownListIsActive: false,
+            sortOption: 'date_unset_dates_first'
+        };
+
+        this.setWrapperRef = this.setWrapperRef.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
+        this.toggleDropdownList = this.toggleDropdownList.bind(this);
+    }
+
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    setWrapperRef(node) {
+        this.wrapperRef = node;
+    }
+
+    handleClickOutside(e) {
+        if (this.wrapperRef && !this.wrapperRef.contains(e.target)) {
+            this.setState({
+                dropdownListIsActive: false,
+            });
+        }
+    }
+
+    toggleDropdownList() {
+        this.setState((prevState, props) => ({
+            dropdownListIsActive: !prevState.dropdownListIsActive
+        }));
+    }
+
+    render() {
+        return (
+            <div className="filter-bar">
+                <div ref={this.setWrapperRef} className="dropdown" onClick={this.toggleDropdownList}>
+                    <div className="dropdown__title">Sort by: <b>{sort_options[this.state.sortOption]}</b></div>
+                    <ul className={(this.state.dropdownListIsActive) ? "dropdown__list dropdown__list--active" : "dropdown__list"}>
+                        {Object.keys(sort_options).map((key, index) => {
+                            return <li className="dropdown__list__item" key={index}>{sort_options[key]}</li>;
+                        })}
+                    </ul>
+                </div>
+            </div>
+        );
+    }
 }
 
 export class TaskList extends React.Component {
 
     componentDidMount() {
 
-        let self = this;
-        let first
         this.props.loadingTasks();
 
         try {
-
-            let tasks = fire.database().ref('/tasks/' + fire.auth().currentUser.uid);
-
-            tasks
-            .orderByChild("dueDate")
-            .startAt(new Date().getTime())
-            .on('child_added', function(data) {
-                let task = data.val();
-                task.key = data.key;
-                self.props.receiveTask(task);
-            });
-
+            this.props.subscribeToTasks();
             this.props.loadingTasksSuccess();
-
         } catch(err) {
-
             this.props.loadingTasksFailed(err);
-
         }
         
     }
@@ -145,8 +192,13 @@ export class TaskList extends React.Component {
         } else {
             return (
                 (tasksGroupedAndSeperatedByDate.length <= 0)
-                    ? <h2>Oh... You have no tasks. Create some now :D</h2>
-                    : <ul className="tasks">{tasksGroupedAndSeperatedByDate}</ul>
+                    ? 
+                    <h2>Oh... You have no tasks. Create some now :D</h2>
+                    : 
+                    <div>
+                        <FilterBar />
+                        <ul className="tasks">{tasksGroupedAndSeperatedByDate}</ul>
+                    </div>
             );
         }
    }
@@ -164,7 +216,9 @@ function mapDispatchToProps(dispatch) {
         receiveTask,
         loadingTasks,
         loadingTasksSuccess,
-        loadingTasksFailed
+        loadingTasksFailed,
+        subscribeToTasks,
+        unsubscribeToTasks
     }, dispatch);
 }
 

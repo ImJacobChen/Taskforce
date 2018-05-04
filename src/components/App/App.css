@@ -4,11 +4,11 @@
   box-sizing: border-box;
 }
 
-.App {
+.app {
   margin: 60px 0;
 }
 
-.App-header {
+.app__header {
   width: 100%;
   background-color: #222;
   padding: 8px 20px;
@@ -19,12 +19,12 @@
   z-index: 2;
 }
 
-.App-header h1 {
+.app__header h1 {
   display: inline-block;
 
 }
 
-.App-header-createTaskButton {
+.app__header__createTaskButton {
   background-color: lightgreen;
   border: none;
   padding: 8px;
@@ -32,7 +32,7 @@
   cursor: pointer;
 }
 
-.App-header-signOutButton {
+.app__header__signOutButton {
   background-color: red;
   border: none;
   padding: 8px;

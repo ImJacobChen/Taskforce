@@ -25,8 +25,8 @@ class Task extends Component {
                 {this.props.title}
                 
                 <div className="task__content-right">
-                    {(this.props.priority != null) ? (<span className="task__priority">{this.props.priority}</span>) : ''}
-                    <span className='task__due-date'>{moment(parseInt(this.props.dueDate)).format("dddd Do MMMM YYYY")}</span>
+                    {this.props.priority != null && <span className="task__priority">{this.props.priority}</span>}
+                    <span className='task__due-date'>{moment(parseInt(this.props.dueDate, 10)).format("dddd Do MMMM YYYY")}</span>
                 </div>
                 
                 <div className="task__expanded-content">
