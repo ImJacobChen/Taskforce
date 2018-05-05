@@ -9,6 +9,7 @@ import {
 } from '../constants/taskConstants';
 
 import updateTaskInAListOfTasks from '../../utilities/taskUtilities/updateTaskInAListOfTasks';
+import deleteTaskInAListOfTasks from '../../utilities/taskUtilities/deleteTaskInAListOfTasks';
 
 const initialState = {
     tasks: [],
@@ -32,16 +33,9 @@ export default function taskReducer(state = initialState, action) {
             return Object.assign({}, state, { tasks: action.payload });
 
         case DELETE_TASK:
-            const tasksToDelete = state.tasks.slice(0);
-
-            const indexToDelete = tasksToDelete.findIndex(
-                function(task) {
-                    return task.id === action.payload.id;
-                }
-            );
-
-            let newTasks = tasksToDelete.splice(indexToDelete, 1);
-            return state = {tasks: newTasks};
+            Object.assign({}, state, {
+                tasks: deleteTaskInAListOfTasks(state.tasks, action.payload.key)
+            });
 
         case LOADING_TASKS:
             return Object.assign({}, state, {
